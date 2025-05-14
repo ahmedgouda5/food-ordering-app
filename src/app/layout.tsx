@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from "@/components/theme-provider"
+
+
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -20,11 +24,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${roboto.className} antialiased`}>
-        <Header/>
-        {children}
-      </body>
+    <html lang="en" suppressHydrationWarning>
+      
+        <body className={`${roboto.className} antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+          <Header />
+          {children}
+          <Toaster  position="bottom-center" />
+          </ThemeProvider>
+        </body>
     </html>
   );
 }

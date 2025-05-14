@@ -6,7 +6,7 @@ export enum PagesNavbar {
   Menu = "/Menu",
   About = "/About",
   Contact = "/Contact",
-  Login = "/Auth/login",
+  Login = "/Auth/Login",
 }
 
 export enum PizzaPjoto {
@@ -15,8 +15,7 @@ export enum PizzaPjoto {
   Meet = "/PizzaThree.png",
 }
 
-
- export type TittleProps = {
+export type TittleProps = {
   head: string;
   para: string;
 };
@@ -31,3 +30,8 @@ export interface PizzaProps {
   medium?: string;
 }
 
+export interface User {
+  username: string;
+  email: string;
+  password: string;
+}

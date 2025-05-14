@@ -39,35 +39,34 @@ const Menu = () => {
   
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4">
-        {pizzas.map((pizza) => (
-          <div
-            key={pizza.id}
-            className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
-          >
-            <Image
-              loading="lazy"
-              src={`/${pizza.image}`}
-              alt={pizza.name}
-              width={200}
-              height={200}
-              className="w-full h-48 object-contain mb-4"
-            />
-            <div className="flex  items-center justify-between mb-2">
-              <h2 className="text-xl font-semibold">{pizza.name}</h2>
-              <span className="text-sm font-bold mt-2 text-gray-500">
-                ${pizza.price}
-              </span>
-            </div>
-            <p className="text-gray-600 text-center">{pizza.desc}</p>
-            <div className="flex items-center justify-center my-4">
-              <Moduel pizza={pizza} />
-            </div>
-          </div>
-        ))}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {pizzas.map((pizza) => (
+      <div
+        key={pizza.id}
+        className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 flex flex-col justify-between min-h-[420px]"
+      >
+        <Image
+          loading="lazy"
+          src={`/${pizza.image}`}
+          alt={pizza.name}
+          width={200}
+          height={200}
+          className="w-full h-48 object-contain mb-4"
+        />
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-xl font-semibold">{pizza.name}</h2>
+          <span className="text-sm font-bold mt-2 text-gray-500">
+            ${pizza.price}
+          </span>
+        </div>
+        <p className="text-gray-600 text-center mb-4">{pizza.desc}</p>
+        <div className="flex items-center justify-center mt-auto">
+          <Moduel pizza={pizza}/>
+        </div>
       </div>
-    </div>
+    ))}
+  </div>
+  
   );
 };
 
