@@ -1,25 +1,17 @@
-'use server';
-
-import { PrismaClient } from "@prisma/client";
 import { User } from "../constents";
-import { revalidatePath } from "next/cache";
-
-
-
-
-const prisma = new PrismaClient();
-
-
-// ! create a new user
 
 export const createUser = async (user: User) => {
-   
-      const newUser = await prisma.user.create({
-        data: user,
-      });
-  
-      revalidatePath("/");
-      return newUser;
-  
-  };
-  
+  const res = await fetch("/api/Auth/Login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+
+  if (!res.ok) {
+    throw new Error("فشل في إنشاء المستخدم");
+  }
+
+  return await res.json();
+};
