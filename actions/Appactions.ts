@@ -12,6 +12,14 @@ export const createUser = async (user: User) => {
   if (!res.ok) {
     throw new Error("فشل في إنشاء المستخدم");
   }
+  const data = await res.json();
+  
+if (data.userId) {
+  localStorage.setItem("Token", data.userId);
+}
 
-  return await res.json();
+
+  return data
 };
+
+ 

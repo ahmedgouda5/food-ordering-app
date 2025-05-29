@@ -4,18 +4,18 @@ import Link from "next/link";
 import { PagesNavbar } from "../../../constents";
 import { X, Menu as MenuIcon } from "lucide-react";
 import { ModeToggle } from "../ModeToggle";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-
   useEffect(() => {
     setHasMounted(true);
   }, []);
-
+  const Token=useSelector((state:RootState) => state.auth.isAuthenticated);
+  console.log("Token from Navbar:", Token);
   
-
-
   const links = [
     { id: "menu", title: "Menu", link: PagesNavbar.Menu },
     { id: "about", title: "About", link: PagesNavbar.About },
@@ -23,7 +23,12 @@ const Navbar = () => {
     { id: "login", title: "Login", link: PagesNavbar.Login },
   ];
 
-  if (!hasMounted) return null; 
+
+  if (!hasMounted) return null;
+  //! Filter out the "Login" link if userId is present
+  const filteredLinks =Token
+    ? links.filter((link) => link.id !== "login")
+    : links;
 
   return (
     <>
@@ -45,7 +50,7 @@ const Navbar = () => {
           size={30}
           onClick={() => setIsOpen(false)}
         />
-        {links.map((item) => (
+        {filteredLinks.map((item) => (
           <li key={item.id}>
             <Link
               href={item.link}
@@ -59,7 +64,9 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
-        <li><ModeToggle/></li>
+        <li>
+          <ModeToggle />
+        </li>
       </ul>
     </>
   );

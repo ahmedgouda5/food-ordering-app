@@ -15,7 +15,15 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(newUser, { status: 200 });
+    // رجّع الـ id كجزء من الاستجابة
+    return NextResponse.json(
+      {
+        message: "User created successfully",
+        userId: newUser.id,
+        user: newUser,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error creating user:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
