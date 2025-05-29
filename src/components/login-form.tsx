@@ -15,20 +15,22 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
-import { toast } from "sonner"
+import { toast } from "sonner";
 import { createUser } from "../../actions/Appactions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/Redux/store";
 import { setToken } from "@/Redux/Featuers/Login/loginslice";
+import { useEffect } from "react";
 
 const loginSchema = z.object({
   username: z.string().min(2, "Username must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-export  function LoginForm({
+export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -41,20 +43,30 @@ export  function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  // ✅ نقلنا localStorage هنا جوا useEffect
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("Token");
+      if (token) {
+        dispatch(setToken(token));
+      }
+    }
+  }, [dispatch]);
+
   async function handleSubmit(data: LoginFormValues) {
     console.log("Form submitted:", data);
     await createUser({
       username: data.username,
       email: data.email,
       password: data.password,
-    });    reset();
-    toast.success(`welcome  ${data.username}`);
-    redirect("/"); 
+    });
+    reset();
+    toast.success(`welcome ${data.username}`);
+    redirect("/");
   }
-  
- const Token =localStorage.getItem("Token");
-  
-  const dispatch=useDispatch<AppDispatch>()
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -112,7 +124,6 @@ export  function LoginForm({
                 type="submit"
                 className="w-full bg-orange-600"
                 disabled={isSubmitting}
-                onClick={() => {dispatch(setToken(Token))}}
               >
                 Login
               </Button>
