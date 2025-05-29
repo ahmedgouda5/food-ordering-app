@@ -17,10 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 import { createUser } from "../../actions/Appactions";
-import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/Redux/store";
+import { useDispatch } from "react-redux";
 import { setToken } from "@/Redux/Featuers/Login/loginslice";
-import { useEffect } from "react";
 
 const loginSchema = z.object({
   username: z.string().min(2, "Username must be at least 2 characters"),
@@ -42,28 +41,19 @@ export function LoginForm({
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
-
   const dispatch = useDispatch<AppDispatch>();
 
-  // ✅ نقلنا localStorage هنا جوا useEffect
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("Token");
-      if (token) {
-        dispatch(setToken(token));
-      }
-    }
-  }, [dispatch]);
-
   async function handleSubmit(data: LoginFormValues) {
-    console.log("Form submitted:", data);
-    await createUser({
+    const response = await createUser({
       username: data.username,
       email: data.email,
       password: data.password,
     });
+
+    console.log("Response from server:", response.userId);
+    dispatch(setToken(response.userId));
+    toast.success(`Welcome ${data.username}`);
     reset();
-    toast.success(`welcome ${data.username}`);
     redirect("/");
   }
 

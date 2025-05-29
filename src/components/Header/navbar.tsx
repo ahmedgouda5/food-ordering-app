@@ -13,9 +13,10 @@ const Navbar = () => {
   useEffect(() => {
     setHasMounted(true);
   }, []);
-  const Token=useSelector((state:RootState) => state.auth.isAuthenticated);
-  console.log("Token from Navbar:", Token);
   
+  const Token=useSelector((state:RootState) => state.auth.Token);
+  
+
   const links = [
     { id: "menu", title: "Menu", link: PagesNavbar.Menu },
     { id: "about", title: "About", link: PagesNavbar.About },
