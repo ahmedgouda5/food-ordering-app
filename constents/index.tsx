@@ -7,6 +7,7 @@ export enum PagesNavbar {
   About = "/About",
   Contact = "/Contact",
   Login = "/Auth/Login",
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 }
 
 export enum PizzaPjoto {
@@ -34,4 +35,14 @@ export interface User {
   username: string;
   email: string;
   password: string;
+}
+
+
+export interface Order{
+  userId:string | null;
+  productName:string;
+  image:string;
+  productDescription:string;
+  price:string;
+  size:string | undefined
 }

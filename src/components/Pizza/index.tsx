@@ -1,5 +1,4 @@
 'use client'
-
 import React from "react";
 import { PizzaProps } from "../../../constents";
 import Image from "next/image";

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { PagesNavbar } from "../../../constents";
 import { X, Menu as MenuIcon } from "lucide-react";
@@ -9,13 +9,12 @@ import { RootState } from "@/Redux/store";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-  
-  const Token=useSelector((state:RootState) => state.auth.Token);
-  
+  // const [hasMounted, setHasMounted] = useState(false);
+  // useEffect(() => {
+  //   setHasMounted(true);
+  // }, []);
+
+  const Token = useSelector((state: RootState) => state.auth.Token);
 
   const links = [
     { id: "menu", title: "Menu", link: PagesNavbar.Menu },
@@ -24,12 +23,10 @@ const Navbar = () => {
     { id: "login", title: "Login", link: PagesNavbar.Login },
   ];
 
-
-  if (!hasMounted) return null;
-  //! Filter out the "Login" link if userId is present
-  const filteredLinks =Token
-    ? links.filter((link) => link.id !== "login")
-    : links;
+ const filteredLinks = links.filter((link) => {
+  if (Token && link.id === "login") return false;
+  return true;
+});
 
   return (
     <>
@@ -56,7 +53,7 @@ const Navbar = () => {
             <Link
               href={item.link}
               className={`${
-                item.link === PagesNavbar.Login
+                item.id === "login" 
                   ? "bg-orange-600 dark:text-white text-black px-4 py-2 rounded-full"
                   : "dark:text-white text-black"
               } hover:text-gray-500 transition`}
